@@ -26,6 +26,12 @@ A body parser for koa, based on [co-body](https://github.com/tj/co-body). suppor
 
 > Notice: this module don't support parsing multipart format data, please use [co-busboy](https://github.com/cojs/busboy) to parse multipart format data.
 
+## 源码解读
+
+本身封装了一个中间件，使用co-body对请求内容进行解析，将解析后的值挂载在ctx.request.body上。
+co-body本身是基于raw-body来完成具体的操作，这和express依赖的body-parser是一致的。
+
+
 ## Install
 
 [![NPM](https://nodei.co/npm/koa-bodyparser.png?downloads=true)](https://nodei.co/npm/koa-bodyparser/)
