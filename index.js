@@ -70,10 +70,12 @@ module.exports = function (opts) {
   extendType(textTypes, extendTypes.text);
 
   return async function bodyParser(ctx, next) {
+    // 如果已存在body，则绕过
     if (ctx.request.body !== undefined) return await next();
     if (ctx.disableBodyParser) return await next();
     try {
       const res = await parseBody(ctx);
+      // 将解析后的body挂载到ctx.request.body上。
       ctx.request.body = 'parsed' in res ? res.parsed : {};
       if (ctx.request.rawBody === undefined) ctx.request.rawBody = res.raw;
     } catch (err) {
@@ -85,7 +87,8 @@ module.exports = function (opts) {
     }
     await next();
   };
-
+  //真正的解析函数
+  //底层基于co-body来完成对body内容的解析
   async function parseBody(ctx) {
     if (enableJson && ((detectJSON && detectJSON(ctx)) || ctx.request.is(jsonTypes))) {
       return await parse.json(ctx, jsonOpts);
@@ -102,6 +105,7 @@ module.exports = function (opts) {
 
 function formatOptions(opts, type) {
   var res = {};
+  // 对对象的属性进行拷贝
   copy(opts).to(res);
   res.limit = opts[type + 'Limit'];
   return res;
