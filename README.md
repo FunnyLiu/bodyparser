@@ -29,7 +29,9 @@ A body parser for koa, based on [co-body](https://github.com/tj/co-body). suppor
 ## 源码解读
 
 本身封装了一个中间件，使用co-body对请求内容进行解析，将解析后的值挂载在ctx.request.body上。
-co-body本身是基于raw-body来完成具体的操作，这和express依赖的body-parser是一致的。
+co-body本身是基于raw-body来完成具体的操作，这和express依赖的body-parser是依赖raw-body是一致的。
+
+而raw-body简单的说就是通过可读流stream的各种事件来读取数据。[stream.on('data)](https://github.com/stream-utils/raw-body/blob/master/index.js#L192)。req 实际上是个 stream，获取 body 的方法是基于注册 on data 事件实现的。
 
 
 ## Install
